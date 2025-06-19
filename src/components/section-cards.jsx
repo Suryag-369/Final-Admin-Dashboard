@@ -18,13 +18,14 @@ import {
 export function SectionCards() {
     const [dashboardData, setDashboardData] = useState(null)
     const [loading, setLoading] = useState(true)
+    const API_BASE_URL = import.meta.env.VITE_REST_API_BASE_URL;
 
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
                 setLoading(true)
                 const response = await axios.get(
-                    'https://sasyak-backend.onrender.com/api/admin/users/dashboard',
+                    `${API_BASE_URL}/api/admin/users/dashboard`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
