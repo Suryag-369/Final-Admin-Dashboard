@@ -60,10 +60,10 @@ export function UpdateEmployeeDialog({ employee, onSuccess,open,onOpenChange }) 
                         <Label htmlFor="phone_number" className="text-right">Phone</Label>
                         <Input name="phone_number" value={formData.phone_number} onChange={handleChange} className="col-span-3" />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    {/* <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="role" className="text-right">Role</Label>
                         <Input name="role" value={formData.role} onChange={handleChange} className="col-span-3" />
-                    </div>
+                    </div> */}
                 </div>
                 <DialogFooter>
                     <Button onClick={handleSubmit} disabled={loading}>
