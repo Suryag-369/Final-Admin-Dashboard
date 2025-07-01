@@ -33,7 +33,7 @@ import { Pencil, Trash2, Plus, Search, Filter } from 'lucide-react';
 import { IconBooks, IconCategory, IconFilter } from '@tabler/icons-react';
 // import { useState, useEffect, useCallback } from 'react';
 
-const API_BASE_URL = `${import.meta.env.VITE_REST_API_BASE_URL}/api/admin/catalog`;
+const API_BASE_URL = `${import.meta.env.VITE_REST_API_BASE_URL}/api/catalog`;
 
 // Get token from localStorage
 const getAuthToken = () => {
