@@ -92,7 +92,7 @@ export default function CreateCatlog() {
     if (!token) {
       throw new Error('No authentication token found');
     }
-    console.log(`API call: ${options.method || 'GET'} ${url}`);
+    // // console.log(`API call: ${options.method || 'GET'} ${url}`);
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -104,7 +104,7 @@ export default function CreateCatlog() {
     });
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`API error: ${response.status} - ${errorText}`);
+      // // console.error(`API error: ${response.status} - ${errorText}`);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const text = await response.text();
@@ -114,33 +114,33 @@ export default function CreateCatlog() {
   // Fetch all catalogs with deletion guard
   const fetchCatalogs = useCallback(async () => {
     if (isDeleting) {
-      console.log('Fetch catalogs skipped due to ongoing deletion');
+      // // console.log('Fetch catalogs skipped due to ongoing deletion');
       return;
     }
-    console.log('Fetching catalogs...');
+    // console.log('Fetching catalogs...');
     try {
       const data = await apiCall(API_BASE_URL);
-      console.log('Fetched catalogs:', data);
+      // console.log('Fetched catalogs:', data);
       // Filter out recently deleted item if server hasn't updated yet
       const filteredData = lastDeletedId
         ? (data || []).filter((cat) => cat.id !== lastDeletedId)
         : data || [];
       setCatalogs(filteredData);
     } catch (error) {
-      console.error('Error fetching catalogs:', error);
+      // console.error('Error fetching catalogs:', error);
       toast.error('Failed to fetch catalogs');
     }
   }, [apiCall, isDeleting, lastDeletedId]);
 
   // Fetch categories
   const fetchCategories = useCallback(async () => {
-    console.log('Fetching categories...');
+    // console.log('Fetching categories...');
     try {
       const data = await apiCall(`${API_BASE_URL}/categories`);
-      console.log('Fetched categories:', data);
+      // console.log('Fetched categories:', data);
       setCategories(data || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      // console.error('Error fetching categories:', error);
       toast.error('Failed to fetch categories');
     }
   }, [apiCall]);
@@ -155,17 +155,17 @@ export default function CreateCatlog() {
         setLoading(false);
       }
     };
-    console.log('Initial data load triggered');
+    // console.log('Initial data load triggered');
     loadData();
   }, [fetchCatalogs, fetchCategories]);
 
   // Sync categories with catalogs
   useEffect(() => {
     if (isDeleting) {
-      console.log('Category sync skipped due to ongoing deletion');
+      // console.log('Category sync skipped due to ongoing deletion');
       return;
     }
-    console.log('Syncing categories with catalogs:', catalogs);
+    // console.log('Syncing categories with catalogs:', catalogs);
     const unique = Array.from(new Set(catalogs.map((c) => c.category)));
     setCategories((prev) => {
       const same = prev.length === unique.length && prev.every((c) => unique.includes(c));
@@ -175,14 +175,14 @@ export default function CreateCatlog() {
 
   // Debug catalogs state changes
   useEffect(() => {
-    console.log('Catalogs state updated:', catalogs);
+    // console.log('Catalogs state updated:', catalogs);
   }, [catalogs]);
 
   // Clear lastDeletedId after a delay to allow server sync
   useEffect(() => {
     if (lastDeletedId) {
       const timer = setTimeout(() => {
-        console.log(`Clearing lastDeletedId: ${lastDeletedId}`);
+        // console.log(`Clearing lastDeletedId: ${lastDeletedId}`);
         setLastDeletedId(null);
         fetchCatalogs(); // Re-fetch after delay to sync with server
       }, 5000); // 5-second delay
@@ -202,7 +202,7 @@ export default function CreateCatlog() {
       setFormData({ category: '', value: '', details: '' });
       toast.success('Catalog created successfully');
     } catch (error) {
-      console.error('Error creating catalog:', error);
+      // console.error('Error creating catalog:', error);
       toast.error('Failed to create catalog');
     }
   };
@@ -220,7 +220,7 @@ export default function CreateCatlog() {
       setFormData({ category: '', value: '', details: '' });
       toast.success('Catalog updated successfully');
     } catch (error) {
-      console.error('Error updating catalog:', error);
+      // console.error('Error updating catalog:', error);
       toast.error('Failed to update catalog');
     }
   };
@@ -231,25 +231,25 @@ export default function CreateCatlog() {
 
     const idToDelete = deletingCatalog.id;
     const deletedCatalog = { ...deletingCatalog }; // Deep copy for rollback
-    console.log('Attempting to delete catalog:', deletedCatalog);
+    // console.log('Attempting to delete catalog:', deletedCatalog);
 
     setIsDeleting(true);
     setLastDeletedId(idToDelete);
     setCatalogs((prev) => {
       const updated = prev.filter((cat) => cat.id !== idToDelete);
-      console.log('Optimistically updated catalogs:', updated);
+      // console.log('Optimistically updated catalogs:', updated);
       return updated;
     });
     setIsDeleteModalOpen(false);
     setDeletingCatalog(null);
 
     try {
-      console.log(`Sending DELETE request to ${API_BASE_URL}/${idToDelete}`);
+      // console.log(`Sending DELETE request to ${API_BASE_URL}/${idToDelete}`);
       await apiCall(`${API_BASE_URL}/${idToDelete}`, { method: 'DELETE' });
-      console.log('DELETE request successful');
+      // console.log('DELETE request successful');
       toast.success('Catalog deleted successfully');
     } catch (error) {
-      console.error('Error deleting catalog:', error);
+      // console.error('Error deleting catalog:', error);
       toast.error('Failed to delete catalog');
       setCatalogs((prev) => [...prev, deletedCatalog].sort((a, b) => a.id - b.id));
       setLastDeletedId(null); // Clear on failure
