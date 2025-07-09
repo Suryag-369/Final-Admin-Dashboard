@@ -180,7 +180,19 @@ const CatalogTable = ({
                       <Badge variant="secondary">{catalog.category}</Badge>
                     </TableCell>
                     <TableCell className="font-medium">{catalog.value}</TableCell>
-                    <TableCell className="text-muted-foreground">{catalog.details}</TableCell>
+                    {/* <TableCell className="text-muted-foreground">{catalog.details}</TableCell> */}
+                    <TableCell className="text-muted-foreground">
+                        {
+                          (() => {
+                            try {
+                              const detailsObj = JSON.parse(catalog.details);
+                              return Object.keys(detailsObj).length > 0 ? catalog.details : null;
+                            } catch (e) {
+                              return null; // If not valid JSON
+                            }
+                          })()
+                        }
+                      </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
