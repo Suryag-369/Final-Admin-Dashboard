@@ -548,6 +548,7 @@ const CatalogForm = ({
                               }
                               className="w-auto min-w-[120px] max-w-full pr-8"
                               placeholder="Value"
+                              
                             />
                             <Button
                               variant="ghost"
@@ -571,7 +572,7 @@ const CatalogForm = ({
                   </div>
                 );
               })}
-              <Button variant="outline" size="sm" onClick={() => addNewChild(parentKey)}>
+              <Button className="bg-green-400 text-white hover:bg-green-600" size="sm" onClick={() => addNewChild(parentKey)}>
                 <Plus className="h-4 w-4" /> Add Child
               </Button>
             </div>

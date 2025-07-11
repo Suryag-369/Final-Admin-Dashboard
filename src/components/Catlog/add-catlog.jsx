@@ -249,7 +249,7 @@ const handleClose = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-7xl w-full max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl w-full max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Catalog</DialogTitle>
           <DialogDescription>
@@ -315,8 +315,8 @@ const handleClose = () => {
                         }))
                     }
                     onBlur={() => renameParent(parentKey, tempParentNames[parentKey])}
-                    placeholder="Parent name"
-                    className="font-bold w-auto min-w-[150px] max-w-full"
+                    placeholder="e.g., Parent name"
+                    className="w-auto min-w-[150px] max-w-full"
                     />
                     <Button
                     variant="ghost"
@@ -396,7 +396,7 @@ const handleClose = () => {
                     );
                     })}
                     <Button
-                    variant="outline"
+                    // variant="outline"
                     size="sm"
                     onClick={() => addNewChild(parentKey)}
                     className="flex items-center gap-1 mt-2"
@@ -408,7 +408,7 @@ const handleClose = () => {
             ))}
 
             <Button
-                variant="outline"
+                // variant="outline"
                 onClick={addNewParent}
                 className="flex items-center gap-1"
             >
@@ -417,7 +417,7 @@ const handleClose = () => {
             </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose}>
+          <Button className="bg-red-400 text-white hover:bg-red-600" onClick={handleClose}>
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!isFormValid()}>

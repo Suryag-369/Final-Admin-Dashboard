@@ -34,7 +34,7 @@ export function DeleteEmployeeDialog({ employee, onSuccess,open, onOpenChange })
                 </DialogHeader>
                 <p>Are you sure you want to delete <strong>{employee.name}</strong>?</p>
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+                    <Button  onClick={() => onOpenChange(false)}>Cancel</Button>
                     <Button variant="destructive" onClick={handleDelete} disabled={loading}>
                         {loading ? "Deleting..." : "Delete"}
                     </Button>

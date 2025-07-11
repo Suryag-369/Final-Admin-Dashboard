@@ -187,6 +187,7 @@
 
 import * as React from 'react';
 import {
+  IconAnalyze,
   IconBook,
   IconCamera,
   IconChartBar,
@@ -194,6 +195,7 @@ import {
   IconDatabase,
   IconDoorExit,
   IconFileAi,
+  IconFileAnalytics,
   IconFileDescription,
   IconFileWord,
   IconFolder,
@@ -243,15 +245,21 @@ const data = {
       icon: Users,
     },
     {
-      title: 'Reports',
-      url: '/reports',
-      icon: IconChartBar,
-    },
-    {
       title: 'Catlog',
       url: '/catlog',
       icon: IconBook,
     },
+    {
+      title: 'Analytics',
+      url: '/analytics',
+      icon: IconChartBar,
+    },
+    {
+      title: 'Reports',
+      url: '/reports',
+      icon: IconFileAnalytics,
+    }
+    
   ],
 };
 
