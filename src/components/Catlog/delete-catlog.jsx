@@ -183,7 +183,7 @@ const DeleteCatalogModal = ({
           )}
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button className="bg-secondary hover:bg-primary text-black hover:text-white">Cancel</Button>
           </DialogClose>
           <Button
             variant="destructive"
