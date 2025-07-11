@@ -1,296 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { Input } from '../ui/input';
-// import { Button } from '../ui/button';
-// import { Label } from '../ui/label';
-// import { Plus, Trash2, X } from 'lucide-react';
-
-// const CatalogForm = ({ initialFormData, onSubmit, onCancel, isEdit = false }) => {
-//   const [formData, setFormData] = useState(initialFormData || { category: '', value: '', details: {} });
-//   const [tempParentNames, setTempParentNames] = useState({});
-//   const [tempChildNames, setTempChildNames] = useState({});
-
-//   useEffect(() => {
-//     if (initialFormData) setFormData(initialFormData);
-//   }, [initialFormData]);
-
-//   const capitaliseFirst = str => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
-
-//   const renameParent = (oldKey, newKey) => {
-//     if (!newKey || newKey === oldKey || formData.details[newKey]) return;
-//     setFormData((prev) => {
-//       const updated = { ...prev.details };
-//       updated[newKey] = { ...updated[oldKey] };
-//       delete updated[oldKey];
-//       return { ...prev, details: updated };
-//     });
-//     setTempParentNames((prev) => {
-//       const updated = { ...prev };
-//       delete updated[oldKey];
-//       return updated;
-//     });
-//   };
-
-//   const deleteParent = (parentKey) => {
-//     setFormData((prev) => {
-//       const updated = { ...prev.details };
-//       delete updated[parentKey];
-//       return { ...prev, details: updated };
-//     });
-//   };
-
-//   const addNewParent = () => {
-//     setFormData((prev) => {
-//       let newKey = '';
-//       while (prev.details.hasOwnProperty(newKey)) newKey += '_';
-//       return {
-//         ...prev,
-//         details: {
-//           ...prev.details,
-//           [newKey]: {},
-//         },
-//       };
-//     });
-//   };
-
-//   const renameChild = (parentKey, oldKey, newKey) => {
-//     if (!newKey || newKey === oldKey || formData.details[parentKey][newKey]) return;
-//     setFormData((prev) => {
-//       const updatedParent = { ...prev.details[parentKey] };
-//       updatedParent[newKey] = updatedParent[oldKey];
-//       delete updatedParent[oldKey];
-//       return {
-//         ...prev,
-//         details: {
-//           ...prev.details,
-//           [parentKey]: updatedParent,
-//         },
-//       };
-//     });
-//     setTempChildNames((prev) => {
-//       const updated = { ...prev };
-//       delete updated[`${parentKey}__${oldKey}`];
-//       return updated;
-//     });
-//   };
-
-//   const addNewChild = (parentKey) => {
-//     setFormData((prev) => {
-//       const updatedParent = { ...prev.details[parentKey] };
-//       let newChildKey = '';
-//       while (updatedParent.hasOwnProperty(newChildKey)) newChildKey += '_';
-//       updatedParent[newChildKey] = [''];
-//       return {
-//         ...prev,
-//         details: {
-//           ...prev.details,
-//           [parentKey]: updatedParent,
-//         },
-//       };
-//     });
-//   };
-
-//   const updateValue = (parentKey, childKey, index, value) => {
-//     setFormData((prev) => {
-//       const updatedParent = { ...prev.details[parentKey] };
-//       const updatedChild = [...updatedParent[childKey]];
-//       updatedChild[index] = value;
-//       updatedParent[childKey] = updatedChild;
-//       return {
-//         ...prev,
-//         details: {
-//           ...prev.details,
-//           [parentKey]: updatedParent,
-//         },
-//       };
-//     });
-//   };
-
-//   const removeValue = (parentKey, childKey, index) => {
-//     setFormData((prev) => {
-//       const updatedParent = { ...prev.details[parentKey] };
-//       const updatedChild = [...updatedParent[childKey]];
-//       updatedChild.splice(index, 1);
-//       updatedParent[childKey] = updatedChild.length > 0 ? updatedChild : [''];
-//       return {
-//         ...prev,
-//         details: {
-//           ...prev.details,
-//           [parentKey]: updatedParent,
-//         },
-//       };
-//     });
-//   };
-
-//   const addNewValue = (parentKey, childKey) => {
-//     setFormData((prev) => {
-//       const updatedParent = { ...prev.details[parentKey] };
-//       const updatedChild = [...updatedParent[childKey], ''];
-//       updatedParent[childKey] = updatedChild;
-//       return {
-//         ...prev,
-//         details: {
-//           ...prev.details,
-//           [parentKey]: updatedParent,
-//         },
-//       };
-//     });
-//   };
-
-//   const deleteChild = (parentKey, childKey) => {
-//     setFormData((prev) => {
-//       const updatedParent = { ...prev.details[parentKey] };
-//       delete updatedParent[childKey];
-//       return {
-//         ...prev,
-//         details: {
-//           ...prev.details,
-//           [parentKey]: updatedParent,
-//         },
-//       };
-//     });
-//     setTempChildNames((prev) => {
-//       const newState = { ...prev };
-//       delete newState[`${parentKey}__${childKey}`];
-//       return newState;
-//     });
-//   };
-
-//   const handleSubmit = () => {
-//     const isValid = formData.category && formData.value;
-//     if (!isValid) return;
-//     onSubmit({ ...formData, details: JSON.stringify(formData.details) });
-//   };
-
-//   return (
-//     <div className="space-y-4">
-//       <div>
-//         <Label>Category</Label>
-//         <Input
-//           value={formData.category}
-//           onChange={(e) => setFormData((prev) => ({ ...prev, category: capitaliseFirst(e.target.value) }))}
-//           placeholder="Category"
-//           required
-//         />
-//       </div>
-//       <div>
-//         <Label>Value</Label>
-//         <Input
-//           value={formData.value}
-//           onChange={(e) => setFormData((prev) => ({ ...prev, value: e.target.value }))}
-//           placeholder="Value"
-//           required
-//         />
-//       </div>
-
-//       <div>
-//         <Label>Details</Label>
-//         {Object.entries(formData.details || {}).map(([parentKey, parentValue]) => (
-//           <div key={parentKey} className="border rounded p-4 mb-4 relative">
-//             <div className="flex justify-between items-center mb-4">
-//               <Input
-//                 value={tempParentNames[parentKey] ?? parentKey}
-//                 onChange={(e) =>
-//                   setTempParentNames((prev) => ({
-//                     ...prev,
-//                     [parentKey]: e.target.value,
-//                   }))
-//                 }
-//                 onBlur={() => renameParent(parentKey, tempParentNames[parentKey])}
-//                 placeholder="Parent name"
-//               />
-//               <Button
-//                 variant="ghost"
-//                 size="sm"
-//                 onClick={() => deleteParent(parentKey)}
-//               >
-//                 <Trash2 className="h-4 w-4" />
-//               </Button>
-//             </div>
-
-//             <div className="space-y-4 max-h-64 overflow-y-auto pr-2">
-//               {Object.entries(parentValue).map(([childKey, childValues]) => {
-//                 const childId = `${parentKey}__${childKey}`;
-//                 return (
-//                   <div key={childId} className="flex items-start gap-2">
-//                     <div className="relative">
-//                       <Input
-//                         value={tempChildNames[childId] ?? childKey}
-//                         onChange={(e) =>
-//                           setTempChildNames((prev) => ({
-//                             ...prev,
-//                             [childId]: e.target.value,
-//                           }))
-//                         }
-//                         onBlur={() => {
-//                           const newKey = tempChildNames[childId];
-//                           if (newKey && newKey !== childKey) {
-//                             renameChild(parentKey, childKey, newKey);
-//                           }
-//                         }}
-//                         placeholder="Child name"
-//                       />
-//                       <Button
-//                         variant="ghost"
-//                         size="sm"
-//                         onClick={() => deleteChild(parentKey, childKey)}
-//                         className="absolute right-2 top-1/2 -translate-y-1/2"
-//                       >
-//                         <Trash2 className="h-4 w-4" />
-//                       </Button>
-//                     </div>
-//                     <div className="flex-1">
-//                       <div className="flex flex-col gap-2">
-//                         {childValues.map((val, i) => (
-//                           <div key={`${childKey}-${i}`} className="flex items-center relative">
-//                             <Input
-//                               value={val}
-//                               onChange={(e) => updateValue(parentKey, childKey, i, e.target.value)}
-//                               placeholder="Value"
-//                             />
-//                             <Button
-//                               variant="ghost"
-//                               size="sm"
-//                               onClick={() => removeValue(parentKey, childKey, i)}
-//                               className="absolute right-2 top-1/2 -translate-y-1/2"
-//                             >
-//                               <X className="h-4 w-4 " />
-//                             </Button>
-//                           </div>
-//                         ))}
-//                         <Button
-//                           variant="ghost"
-//                           size="sm"
-//                           onClick={() => addNewValue(parentKey, childKey)}
-//                         >
-//                           <Plus className="h-4 w-4 mr-2" /> Add New
-//                         </Button>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 );
-//               })}
-//               <Button variant="outline" size="sm" onClick={() => addNewChild(parentKey)}>
-//                 <Plus className="h-4 w-4" /> Add Child
-//               </Button>
-//             </div>
-//           </div>
-//         ))}
-
-//         <Button variant="outline" onClick={addNewParent}>
-//           <Plus className="h-4 w-4" /> Add Parent
-//         </Button>
-//       </div>
-
-//       <div className="flex justify-end gap-2 pt-4">
-//         <Button variant="outline" onClick={onCancel}>Cancel</Button>
-//         <Button onClick={handleSubmit}>{isEdit ? 'Update' : 'Create'} Catalog</Button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CatalogForm;
-// ✅ catalog-form.jsx
 import React, { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -497,14 +204,14 @@ const CatalogForm = ({
                   })
                 }
                 onBlur={() => renameParent(parentKey, tempParentNames[parentKey])}
-                placeholder="Parent name"
-                className="font-bold w-auto min-w-[150px] max-w-full"
+                placeholder="e.g.. Parent name"
+                className="w-auto min-w-[150px] max-w-full"
               />
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => deleteParent(parentKey)}
-                className="absolute right-2 top-2"
+                className="absolute right-2 top-3   hover:text-red-600"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -525,14 +232,14 @@ const CatalogForm = ({
                           })
                         }
                         onBlur={() => renameChild(parentKey, childKey, tempChildNames[childId])}
-                        placeholder="Child name"
+                        placeholder="e.g.. Child name"
                         className="w-auto min-w-[120px] max-w-full pr-8"
                       />
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => deleteChild(parentKey, childKey)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 hover:text-black"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -547,14 +254,14 @@ const CatalogForm = ({
                                 updateValue(parentKey, childKey, index, e.target.value)
                               }
                               className="w-auto min-w-[120px] max-w-full pr-8"
-                              placeholder="Value"
+                              placeholder="e.g.. Value"
                               
                             />
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => removeValue(parentKey, childKey, index)}
-                              className="absolute right-2 top-1/2 -translate-y-1/2"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 hover:text-black"
                             >
                               <X className="h-4 w-4" />
                             </Button>
@@ -564,6 +271,7 @@ const CatalogForm = ({
                           variant="ghost"
                           size="sm"
                           onClick={() => addNewValue(parentKey, childKey)}
+                          className="hover:text-black"
                         >
                           <Plus className="h-4 w-4 mr-2" /> Add New
                         </Button>
@@ -572,19 +280,19 @@ const CatalogForm = ({
                   </div>
                 );
               })}
-              <Button className="bg-green-400 text-white hover:bg-green-600" size="sm" onClick={() => addNewChild(parentKey)}>
+              <Button size="sm" onClick={() => addNewChild(parentKey)}>
                 <Plus className="h-4 w-4" /> Add Child
               </Button>
             </div>
           </div>
         ))}
-        <Button variant="outline" onClick={addNewParent}>
-          <Plus className="h-4 w-4" /> Add Parent
+        <Button onClick={addNewParent}>
+          <Plus className="h-4 w-4 " /> Add Parent
         </Button>
       </div>
 
       <div className="flex justify-end gap-2 pt-4">
-        <Button variant="outline" onClick={onCancel}>Cancel</Button>
+        <Button className="bg-red-400 hover:bg-red-600 " onClick={onCancel}>Cancel</Button>
         <Button onClick={onSubmit}>{isEdit ? 'Update' : 'Create'} Catalog</Button>
       </div>
     </div>

@@ -322,7 +322,7 @@ const handleClose = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => deleteParent(parentKey)}
-                    className="absolute right-2 top-2"
+                    className="absolute right-2 top-2 hover:text-red-600"
                     >
                     <Trash2 className="h-4 w-4" />
                     </Button>
@@ -356,7 +356,7 @@ const handleClose = () => {
                             variant="ghost"
                             size="sm"
                             onClick={() => deleteChild(parentKey, childKey)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 hover:text-black"
                             >
                             <Trash2 className="h-4 w-4" />
                             </Button>
@@ -376,7 +376,7 @@ const handleClose = () => {
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => removeValue(parentKey, childKey, i)}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 hover:text-black"
                                 >
                                     <X className="h-4 w-4 " />
                                 </Button>
@@ -386,7 +386,7 @@ const handleClose = () => {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => addNewValue(parentKey, childKey)}
-                                className="flex items-center w-32"
+                                className="flex items-center w-32 hover:text-black"
                             >
                                 <Plus className="h-4 w-4 mr-2" /> Add New
                             </Button>
