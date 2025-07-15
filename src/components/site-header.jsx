@@ -104,9 +104,9 @@ export function SiteHeader() {
             </DialogHeader>
             <DialogFooter className="flex justify-end gap-3 mt-6">
               <Button
-                  variant="outline"
+                  // variant="outline"
                   onClick={() => setLogoutDialogOpen(false)}
-                  className="px-4 py-2 border-green-600 hover:bg-green-600"
+                  className="px-4 py-2 border-green-600 hover:bg-green-600 hover:text-black"
               >
                 Cancel
               </Button>

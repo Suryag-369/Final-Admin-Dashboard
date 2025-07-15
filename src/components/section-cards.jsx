@@ -37,10 +37,10 @@ export function SectionCards() {
                 console.error("Failed to fetch dashboard data:", error)
                 // Set mock data for demo purposes
                 setDashboardData({
-                    totalEmployees: 156,
-                    totalSupervisors: 12,
-                    totalManagers: 8,
-                    totalTasks: 234
+                    totalEmployees: 0,
+                    totalSupervisors: 0,
+                    totalManagers: 0,
+                    totalTasks: 0
                 })
             } finally {
                 setLoading(false)
